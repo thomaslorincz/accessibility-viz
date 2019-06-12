@@ -19,7 +19,7 @@ export default class MapView extends View {
     const attribution = `<a ${href} ${rel} ${target}>${credit}<a/>`;
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/thomaslorincz/cjwjclmjn22nj1cqohlh03qrf',
+      style: 'mapbox://styles/mapbox/light-v9',
       bounds: [[-115.11466, 53.04465], [-112.16116, 54.06214]],
       attributionControl: false,
       dragRotate: false,
