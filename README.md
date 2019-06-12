@@ -17,3 +17,13 @@ npm run dev
 ```
 npm run prod
 ```
+### Deploy
+After finishing work on a feature:
+```
+npm run buildProd
+```
+Then commit the changes made to the dist folder:
+```
+git commit -m "Built prod"
+```
+Once the changes are pushed to the master branch, they will be automatically deployed to Heroku.
