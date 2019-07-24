@@ -1,8 +1,6 @@
 # Accessibility Visualization
 ## Website
 https://a11y-viz.herokuapp.com
-## Supported Browsers
-All major browsers are supported except Internet Explorer
 ## Development
 ### Install
 ```
@@ -26,6 +24,6 @@ npm run buildProd
 ```
 Then commit the changes made to the dist folder:
 ```
-git commit -m "Built prod"
+git commit -m "Build prod"
 ```
 Once the changes are pushed to the master branch, they will be automatically deployed to Heroku.
