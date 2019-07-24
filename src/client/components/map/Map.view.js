@@ -1,13 +1,14 @@
 import mapboxgl from 'mapbox-gl';
 import View from '../../superclasses/View';
 
-// eslint-disable-next-line
+/** @class */
 export default class MapView extends View {
   /**
    * @param {HTMLElement} container
+   * @param {EventEmitter} emitter
    */
-  constructor(container) {
-    super(container);
+  constructor(container, emitter) {
+    super(container, emitter);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';
@@ -29,13 +30,11 @@ export default class MapView extends View {
     }));
 
     this.map.on('load', () => {
-      this.container.dispatchEvent(new CustomEvent('loaded'));
+      this.emitter.emit('loaded');
     });
   }
 
-  /**
-   * Draws the map
-   */
+  /** Draws the map */
   draw({}) {
     // TODO:
   }

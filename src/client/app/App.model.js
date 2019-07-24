@@ -1,18 +1,14 @@
 import Model from '../superclasses/Model';
 
-/**
- * Model that stores and controls the app's data and state.
- */
+/** Model that stores and controls the app's data and state. */
 export default class AppModel extends Model {
-  // eslint-disable-next-line
-  constructor() {
-    super();
+  /** @param {EventEmitter} emitter */
+  constructor(emitter) {
+    super(emitter);
   }
 
-  /**
-   * A method for dispatching the initial draw event of the app.
-   */
+  /** A method for dispatching the initial draw event of the app. */
   initialDraw() {
-    document.dispatchEvent(new CustomEvent('initialDraw'));
+    this.emitter.emit('initialDraw');
   }
 }
