@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -30,11 +31,6 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
         test: /\.html$/,
         use: [{loader: 'html-loader'}],
       },
@@ -42,23 +38,15 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-      {
-        test: /\.(png|svg|jpe?g|gif|geojson|csv)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[path][name].[ext]',
-            },
-          },
-        ],
-      },
     ],
   },
   plugins: [
+    new CopyWebpackPlugin([
+      {from: 'assets', to: 'images'},
+    ]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
-      filename: './index.html',
+      filename: 'index.html',
       excludeChunks: ['server'],
     }),
     new webpack.HotModuleReplacementPlugin(),

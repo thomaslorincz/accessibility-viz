@@ -1,7 +1,8 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
@@ -16,20 +17,32 @@ module.exports = {
   target: 'web',
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-      }),
+      new TerserPlugin({parallel: true}),
       new OptimizeCSSAssetsPlugin({}),
     ],
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   module: {
     rules: [
       {
+        enforce: 'pre',
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {loader: 'babel-loader'},
+        loader: 'eslint-loader',
+        options: {
+          emitWarning: true,
+          failOnError: true,
+          failOnWarning: false,
+        },
       },
       {
         test: /\.html$/,
@@ -41,30 +54,23 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpe?g|gif|geojson|csv)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[hash].[ext]',
-            },
-          },
-        ],
-      },
-      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
   plugins: [
+    new CopyWebpackPlugin([
+      {from: 'assets', to: 'images'},
+    ]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
-      filename: './index.html',
+      filename: 'index.html',
+      excludeChunks: ['server'],
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[id].css',
+      chunkFilename: '[name].css',
     }),
   ],
 };
