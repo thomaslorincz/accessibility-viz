@@ -4,10 +4,11 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CompressPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: {
-    main: './src/client/index.js',
+    main: './src/client/index.ts',
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -31,17 +32,28 @@ module.exports = {
       },
     },
   },
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
   module: {
     rules: [
       {
         enforce: 'pre',
-        test: /\.js$/,
+        test: /\.(ts|js)$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
           emitWarning: true,
           failOnError: true,
           failOnWarning: false,
+        },
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          configFile: 'tsconfig.prod.json',
         },
       },
       {
@@ -71,6 +83,12 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[name].css',
+    }),
+    new CompressPlugin({
+      test: /\.(js|css)$/,
+      algorithm: 'brotliCompress',
+      filename: '[path].br[query]',
+      deleteOriginalAssets: true,
     }),
   ],
 };
