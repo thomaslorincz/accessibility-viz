@@ -1,13 +1,11 @@
-import mapboxgl from 'mapbox-gl';
+import * as mapboxgl from 'mapbox-gl';
 import View from '../../superclasses/View';
+import * as EventEmitter from 'eventemitter3';
 
-/** @class */
 export default class MapView extends View {
-  /**
-   * @param {HTMLElement} container
-   * @param {EventEmitter} emitter
-   */
-  constructor(container, emitter) {
+  private map: mapboxgl.Map;
+
+  public constructor(container: Element, emitter: EventEmitter) {
     super(container, emitter);
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
@@ -34,8 +32,7 @@ export default class MapView extends View {
     });
   }
 
-  /** Draws the map */
-  draw({}) {
+  draw(): void {
     // TODO:
   }
 }
