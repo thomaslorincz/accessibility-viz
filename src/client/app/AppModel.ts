@@ -1,14 +1,14 @@
 import Model from '../superclasses/Model';
+import * as EventEmitter from 'eventemitter3';
 
 /** Model that stores and controls the app's data and state. */
 export default class AppModel extends Model {
-  /** @param {EventEmitter} emitter */
-  constructor(emitter) {
+  public constructor(emitter: EventEmitter) {
     super(emitter);
   }
 
   /** A method for dispatching the initial draw event of the app. */
-  initialDraw() {
+  initialDraw(): void {
     this.emitter.emit('initialDraw');
   }
 }
